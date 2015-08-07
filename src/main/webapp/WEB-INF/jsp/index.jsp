@@ -7,7 +7,7 @@
     <title>Upload File</title>
     <style>
         .gambar {padding:5px; margin:5px; display:block; float:left;}
-        
+        .cl {clear:both;}
     </style>
 </head>
 <body>
@@ -18,7 +18,19 @@
         <input type="submit" value="Upload Gambar">
     </form>
         
+    <c:if test="${not empty error_message}">
+        <!-- display jika ada pesan upload gagal -->
+        <b>UPLOAD GAGAL</b><br>
+        <b>${error_message}</b><br>
+    </c:if>
+        
+    <c:if test="${not empty success_message}">
+        <!-- display jika ada pesan upload sukses-->
+        <b>${success_message}</b><br>
+    </c:if>
+        
     <c:if test="${not empty file_name}">
+        <!-- display jika ada file yang diupload -->
         <b>FILE TELAH DIUPLOAD</b><br>
         NAMA: ${file_name}<br>
         TIPE: ${file_type}<br>
@@ -26,11 +38,24 @@
         
     
     <c:if test="${not empty files}">
+        <!-- list files yang diupload -->
+        
         <hr>
+        <h2>Image, display menggunakan resources</h2>
         <div id="images">
             <c:forEach items="${files}" var="file" varStatus="loop">
                 <img src="<c:url value="/img/${file}"/>" class="gambar" />
             </c:forEach>
+            <br class="cl"/>
+        </div>
+       
+        <hr>
+        <h2>Image, display menggunakan custom controller</h2>
+        <div id="images2">
+            <c:forEach items="${files}" var="file" varStatus="loop">
+                <img src="<c:url value="/getimg/${file}"/>" class="gambar" />
+            </c:forEach>
+            <br class="cl"/>
         </div>
     </c:if>
 

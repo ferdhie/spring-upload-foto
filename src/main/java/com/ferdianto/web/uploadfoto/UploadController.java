@@ -1,7 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) Herdian Ferdianto <herdian-at-ferdianto.com>
+ * 
+ * Everyone is permitted to copy and distribute verbatim or modified 
+ * copies of this license document, and changing it is allowed as long 
+ * as the name is changed. 
+ * 
  */
 package com.ferdianto.web.uploadfoto;
 
@@ -28,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
+ * Controller untuk upload file dan list semua file yang terupload
  * @author ferdhie
  */
 @Controller
@@ -41,7 +44,13 @@ public class UploadController {
     //inject dari config.properties
     @Value("${image.maxheight:300}")
     private int maxImageHeight;
-    
+
+    /**
+     * Index controller
+     * @param request cek variabel OK di querystring
+     * @param model map variable utl template
+     * @return template jsp string
+     */
     @RequestMapping("/")
     public String welcome(HttpServletRequest request, Map<String,Object> model) {
         if (request.getParameter("ok") != null) {
@@ -55,6 +64,12 @@ public class UploadController {
         return "index";
     }
 
+    /**
+     * Upload file controller
+     * @param file file yg diupload
+     * @param model template
+     * @return jsp template file name
+     */
     @RequestMapping(value="/upload", method=RequestMethod.POST)
     public String upload(@RequestParam("file") MultipartFile file, Map<String,Object> model) {
         String filename = file.getOriginalFilename().toLowerCase();
@@ -80,6 +95,10 @@ public class UploadController {
         return "index";
     }
     
+    /**
+     * Menampilkan semua file yang terupload
+     * @return List<String> nama file yang telah diupload
+     */
     private List<String> listUploadedFiles() {
         File dir = new File(uploadDir);
         String[] filenames = dir.list(new FilenameFilter() {
@@ -95,6 +114,11 @@ public class UploadController {
         return Arrays.asList(filenames);
     }
     
+    /**
+     * Resize image sesuai dengan ukuran secara proporsional
+     * @param file MultipartFile post multipart dari controller / servlet
+     * @throws IOException kalau error
+     */
     private void resizeImageAndSave( MultipartFile file ) throws IOException {
         String filename = file.getOriginalFilename().toLowerCase();
         int dotIndex = filename.lastIndexOf('.');
@@ -150,6 +174,11 @@ public class UploadController {
         
     }
     
+    /**
+     * Cek ekstensi dan mimetype file yang diupload
+     * @param file post multipart file
+     * @return 
+     */
     private boolean validasiFileUpload(MultipartFile file) {
         String filename = file.getOriginalFilename().toLowerCase();
         String filetype = file.getContentType();
