@@ -1,0 +1,27 @@
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.scala_dependencies
+.cache
+
+# idea conf files
+.idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# misc
+.DS_Store
+*~
+*.log
+
+# target folder
+target/
+overlays/
+
+# vim swapfile
+.*.sw*
+/nb-configuration.xml
